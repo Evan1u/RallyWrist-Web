@@ -27,27 +27,15 @@
           <a class="text-link" href="#story">看看它如何工作 <span aria-hidden="true">→</span></a>
         </div>
 
-        <div class="hero-visual reveal" aria-label="RallyWrist 双打计分界面演示">
+        <div class="hero-visual reveal" aria-label="RallyWrist 双打计分真实模拟器截图">
           <div class="halo"></div>
           <div class="watch-shell hero-watch">
             <div class="crown"></div>
-            <div class="watch-screen court-screen" data-demo="hero">
-              <div class="court-half court-blue">
-                <div class="court-lines"></div>
-                <span class="player player-left">蓝2<small>搭档</small></span>
-                <strong class="score" data-blue-score>11</strong>
-                <span class="player player-right serving">蓝1<i class="shuttle">◒</i></span>
-              </div>
-              <div class="net-label">第 2 局 · 1:0</div>
-              <div class="court-half court-red">
-                <div class="court-lines"></div>
-                <span class="player player-left receiving">红2<i>◎</i></span>
-                <strong class="score" data-red-score>8</strong>
-                <span class="player player-right">红1<small>搭档</small></span>
-              </div>
-              <div class="swipe-cue"><span>↑</span> 上滑得分</div>
+            <div class="watch-screen">
+              <img class="simulator-shot" src="assets/simulator-doubles.png" alt="RallyWrist 双打计分真实模拟器界面，蓝方 14 分、红方 10 分" />
             </div>
           </div>
+          <span class="capture-label">Apple Watch Simulator · 实际界面</span>
         </div>
 
         <p class="scroll-note">向下探索</p>
@@ -64,12 +52,7 @@
             <div class="watch-shell story-watch">
               <div class="crown"></div>
               <div class="watch-screen story-screen" data-screen="setup">
-                <div class="setup-panel setup-top">
-                  <b>开始运动</b><span>🏸</span>
-                </div>
-                <div class="setup-panel setup-left"><small>目标分</small><b>21 分</b></div>
-                <div class="setup-panel setup-right"><small>首局发球</small><b>蓝方</b></div>
-                <div class="setup-center"><small>比赛模式</small><b>双打</b><span>›</span></div>
+                <img class="simulator-shot" src="assets/simulator-setup.png" alt="RallyWrist 双打开赛设置真实模拟器界面" />
               </div>
             </div>
           </div>
@@ -109,11 +92,11 @@
             <h2>向上，加一分。<br />向下，撤回。</h2>
             <p>没有拥挤的小按钮。整片半场就是你的操作区域。</p>
           </div>
-          <div class="gesture-demo" aria-hidden="true">
-            <span class="gesture-score">17</span>
-            <span class="gesture-finger"></span>
-            <span class="gesture-trail"></span>
-            <span class="gesture-plus">+1</span>
+          <div class="feature-device" aria-label="RallyWrist 单打计分真实模拟器截图">
+            <img src="assets/simulator-singles.png" alt="RallyWrist 单打计分界面，蓝方 13 分、红方 8 分" />
+            <span class="gesture-finger" aria-hidden="true"></span>
+            <span class="gesture-trail" aria-hidden="true"></span>
+            <span class="gesture-plus" aria-hidden="true">+1</span>
           </div>
         </article>
 
@@ -123,12 +106,8 @@
             <h2>忘了结束？<br />它会替你记得。</h2>
             <p>长时间没有活动时主动提醒；没有回应，则自动结束并保存本次比赛。</p>
           </div>
-          <div class="prompt-card" aria-label="长时间未活动提醒示意">
-            <span class="standing">◉</span>
-            <b>检测到长时间未活动</b>
-            <strong>1:42</strong>
-            <small>倒计时结束后将自动保存</small>
-            <div><span>结束并保存</span><span>继续运动</span></div>
+          <div class="feature-device inactivity-device">
+            <img src="assets/simulator-inactivity.png" alt="RallyWrist 长时间未活动提醒真实模拟器界面" />
           </div>
         </article>
       </section>
@@ -139,8 +118,19 @@
           <h2>每一次轮转，<br /><span>都清清楚楚。</span></h2>
           <p>发球、接发、左右站位随比分变化。把容易出错的规则，变成一眼就懂的球场。</p>
         </div>
-        <div class="rotation-asset reveal">
-          <img src="assets/doubles-rotation.svg" alt="双打比赛中开局、蓝方得分与红方得分后的站位变化示意" />
+        <div class="rotation-gallery reveal" aria-label="真实模拟器中的三次双打站位变化">
+          <figure>
+            <div class="capture-frame"><img src="assets/simulator-rotation-0.png" alt="双打开局 0 比 0 的实际界面" /></div>
+            <figcaption>① 开局 · 0:0</figcaption>
+          </figure>
+          <figure>
+            <div class="capture-frame"><img src="assets/simulator-rotation-1.png" alt="蓝方得分后 1 比 0 的实际界面" /></div>
+            <figcaption>② 蓝方得分 · 1:0</figcaption>
+          </figure>
+          <figure>
+            <div class="capture-frame"><img src="assets/simulator-rotation-2.png" alt="红方得分后 1 比 1 的实际界面" /></div>
+            <figcaption>③ 红方得分 · 1:1</figcaption>
+          </figure>
         </div>
       </section>
 
