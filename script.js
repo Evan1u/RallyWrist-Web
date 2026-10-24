@@ -48,37 +48,62 @@ addEventListener('scroll', updateStory, { passive: true });
 addEventListener('resize', updateStory);
 updateStory();
 
-const heroSequence = document.querySelector('[data-score-sequence]');
-const heroFrames = [...heroSequence.querySelectorAll('.score-frame')];
-let heroSequenceVisible = true;
-let heroScoreTimer;
+const scoreSequences = [...document.querySelectorAll('[data-score-sequence]')];
+const sequenceState = new WeakMap();
 
-function showHeroFrame(index) {
-  heroFrames.forEach((frame, frameIndex) => {
+function showScoreFrame(sequence, index) {
+  const frames = [...sequence.querySelectorAll('.score-frame')];
+  frames.forEach((frame, frameIndex) => {
     const active = frameIndex === index;
     frame.classList.toggle('is-active', active);
     frame.setAttribute('aria-hidden', String(!active));
   });
 }
 
-function playHeroScore() {
-  if (document.hidden || !heroSequenceVisible) return;
-  clearTimeout(heroScoreTimer);
-  showHeroFrame(0);
-  heroSequence.classList.remove('is-scoring');
+function playScoreSequence(sequence) {
+  const state = sequenceState.get(sequence);
+  if (!state || document.hidden || !state.visible) return;
+  clearTimeout(state.scoreTimer);
+  clearTimeout(state.loopTimer);
+  showScoreFrame(sequence, 0);
+  sequence.classList.remove('is-scoring', 'is-punching');
   requestAnimationFrame(() => {
-    requestAnimationFrame(() => heroSequence.classList.add('is-scoring'));
+    requestAnimationFrame(() => sequence.classList.add('is-scoring'));
   });
-  heroScoreTimer = setTimeout(() => showHeroFrame(1), 1380);
+  state.scoreTimer = setTimeout(() => {
+    showScoreFrame(sequence, 1);
+    sequence.classList.add('is-punching');
+  }, Number(sequence.dataset.scoreDelay));
+  state.loopTimer = setTimeout(() => playScoreSequence(sequence), Number(sequence.dataset.cycle));
 }
 
-new IntersectionObserver(([entry]) => {
-  heroSequenceVisible = entry.isIntersecting;
-}, { threshold: 0.2 }).observe(heroSequence);
+const sequenceObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    const state = sequenceState.get(entry.target);
+    const becameVisible = entry.isIntersecting && !state.visible;
+    state.visible = entry.isIntersecting;
+    if (becameVisible && state.startOnReveal && !prefersReducedMotion) playScoreSequence(entry.target);
+  });
+}, { threshold: 0.2 });
 
-if (!prefersReducedMotion) {
-  playHeroScore();
-  setInterval(playHeroScore, 4200);
+scoreSequences.forEach((sequence) => {
+  const isHero = sequence.classList.contains('hero-score-sequence');
+  sequenceState.set(sequence, { visible: isHero, startOnReveal: true, scoreTimer: null, loopTimer: null });
+  sequenceObserver.observe(sequence);
+  if (!prefersReducedMotion && isHero) playScoreSequence(sequence);
+});
+
+function playHeroScore() {
+  const heroSequence = document.querySelector('.hero-score-sequence');
+  playScoreSequence(heroSequence);
+}
+
+function playFeatureScore() {
+  const featureSequence = document.querySelector('.feature-score-sequence');
+  const state = sequenceState.get(featureSequence);
+  state.visible = true;
+  state.startOnReveal = false;
+  playScoreSequence(featureSequence);
 }
 
 const rotationGallery = document.querySelector('.rotation-gallery');

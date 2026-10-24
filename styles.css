@@ -85,14 +85,19 @@ h1, h2, h3 { margin: 0; letter-spacing: -.055em; }
 .watch-screen { width: 100%; height: 100%; overflow: hidden; border-radius: 68px; background: #06070a; color: white; }
 .simulator-shot { display: block; width: 100%; height: 100%; object-fit: cover; background: #06070a; }
 .shot-sequence { position: relative; }
-.shot-sequence .score-frame { position: absolute; inset: 0; opacity: 0; transform: scale(1.018); transition: opacity .48s ease, transform .72s cubic-bezier(.2,.8,.2,1); }
-.shot-sequence .score-frame.is-active { z-index: 1; opacity: 1; transform: scale(1); }
+.shot-sequence .score-frame { position: absolute; inset: 0; opacity: 0; transition: opacity .06s linear; }
+.shot-sequence .score-frame.is-active { z-index: 1; opacity: 1; }
+.score-punch-crop { position: absolute; z-index: 5; overflow: hidden; opacity: 0; pointer-events: none; transform-origin: center; }
+.score-punch-crop img { position: absolute; display: block; max-width: none; object-fit: fill; }
+.hero-score-sequence .score-punch-crop { left: 44%; top: 23%; width: 12%; height: 20%; }
+.hero-score-sequence .score-punch-crop img { left: -366.667%; top: -115%; width: 833.333%; height: 500%; }
+.feature-score-sequence .score-punch-crop { left: 34%; top: 22%; width: 34%; height: 22%; }
+.feature-score-sequence .score-punch-crop img { left: -100%; top: -100%; width: 294.118%; height: 454.545%; }
+.shot-sequence.is-punching .score-punch-crop { animation: scorePunch .52s cubic-bezier(.2,.8,.2,1) both; }
 .hero-swipe-finger { position: absolute; z-index: 4; left: 10%; top: 40%; width: 26px; height: 36px; border: 1px solid rgba(255,255,255,.74); border-radius: 50% 50% 44% 44%; background: rgba(255,255,255,.9); box-shadow: 0 8px 22px rgba(0,0,0,.32); opacity: 0; transform: translate(-50%, 8px); }
 .hero-swipe-trail { position: absolute; z-index: 3; left: 10%; top: 15%; height: 92px; border-left: 2px dashed rgba(255,255,255,.76); opacity: 0; transform: scaleY(.2); transform-origin: bottom; }
-.hero-score-pop { position: absolute; z-index: 4; left: 50%; top: 9%; translate: -50% 0; padding: 4px 9px; border-radius: 999px; color: white; background: rgba(7,10,18,.74); font-size: 19px; font-weight: 750; opacity: 0; transform: scale(.7); }
 .shot-sequence.is-scoring .hero-swipe-finger { animation: heroFingerSwipe 1.05s cubic-bezier(.3,.7,.2,1) .28s both; }
 .shot-sequence.is-scoring .hero-swipe-trail { animation: heroSwipeTrail 1.05s ease .28s both; }
-.shot-sequence.is-scoring .hero-score-pop { animation: heroPoint 1.35s cubic-bezier(.2,.8,.2,1) 1.34s both; }
 .capture-label { position: absolute; bottom: 56px; left: 50%; transform: translateX(-50%); white-space: nowrap; color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: .02em; }
 .court-screen { position: relative; display: grid; grid-template-rows: 1fr 1fr; }
 .court-half { position: relative; min-height: 0; display: grid; grid-template-columns: 1fr .7fr 1fr; align-items: center; padding: 26px 15px; }
@@ -156,11 +161,14 @@ h1, h2, h3 { margin: 0; letter-spacing: -.055em; }
 .feature-copy > p:last-child { max-width: 430px; color: var(--muted); font-size: 17px; line-height: 1.55; }
 .feature-gesture { background: linear-gradient(155deg, #eef4ff, #fff 62%); }
 .feature-device { position: absolute; left: 50%; bottom: -74px; width: 330px; aspect-ratio: 374 / 446; transform: translateX(-50%); overflow: hidden; border: 10px solid #252a33; border-radius: 74px 74px 0 0; background: #05070c; box-shadow: 0 30px 80px rgba(30,91,255,.27); }
-.feature-device img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.feature-device > img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .gesture-score { font-size: 130px; font-weight: 750; letter-spacing: -.09em; }
-.gesture-finger { position: absolute; z-index: 3; top: 47%; left: 24%; width: 36px; height: 48px; border: 1px solid rgba(255,255,255,.7); border-radius: 50% 50% 44% 44%; background: rgba(255,255,255,.86); box-shadow: 0 8px 24px rgba(0,0,0,.28); filter: blur(.25px); animation: fingerSwipe 3s ease-in-out infinite; }
-.gesture-trail { position: absolute; z-index: 2; top: 25%; left: calc(24% + 17px); height: 96px; border-left: 2px dashed rgba(255,255,255,.68); animation: trail 3s ease-in-out infinite; }
-.gesture-plus { position: absolute; z-index: 3; top: 28%; left: 11%; padding: 4px 9px; border-radius: 999px; color: white; background: rgba(7,10,18,.7); font-size: 22px; font-weight: 700; opacity: 0; animation: plus 3s ease-in-out infinite; }
+.gesture-finger { position: absolute; z-index: 4; top: 47%; left: 24%; width: 36px; height: 48px; border: 1px solid rgba(255,255,255,.7); border-radius: 50% 50% 44% 44%; background: rgba(255,255,255,.86); box-shadow: 0 8px 24px rgba(0,0,0,.28); filter: blur(.25px); opacity: 0; transform: translate(-50%, 8px); }
+.gesture-trail { position: absolute; z-index: 3; top: 24%; left: calc(24% + 17px); height: 96px; border-left: 2px dashed rgba(255,255,255,.68); opacity: 0; transform: scaleY(.2); transform-origin: bottom; }
+.gesture-plus { position: absolute; z-index: 6; top: 28%; left: 76%; padding: 4px 9px; border-radius: 999px; color: white; background: rgba(7,10,18,.7); font-size: 22px; font-weight: 700; opacity: 0; transform: scale(.7); }
+.feature-score-sequence.is-scoring .gesture-finger { animation: heroFingerSwipe 1.05s cubic-bezier(.3,.7,.2,1) .28s both; }
+.feature-score-sequence.is-scoring .gesture-trail { animation: heroSwipeTrail 1.05s ease .28s both; }
+.feature-score-sequence.is-scoring .gesture-plus { animation: featurePoint 1.15s cubic-bezier(.2,.8,.2,1) 1.34s both; }
 .feature-inactivity { color: white; background: radial-gradient(circle at 50% 72%, #1d326f, var(--space) 58%); }
 .feature-inactivity .eyebrow { color: var(--electric); }
 .feature-inactivity .feature-copy > p:last-child { color: #bac6d8; }
@@ -200,12 +208,10 @@ footer { min-height: 86px; padding: 0 max(24px, calc((100vw - 1180px) / 2)); dis
 @keyframes screenReveal { from { opacity: .25; transform: scale(1.035); filter: blur(5px); } to { opacity: 1; transform: scale(1); filter: blur(0); } }
 @keyframes heroFingerSwipe { 0% { opacity: 0; transform: translate(-50%, 14px); } 18%,76% { opacity: .94; } 82% { transform: translate(-50%, -84px); opacity: .94; } 100% { transform: translate(-50%, -92px); opacity: 0; } }
 @keyframes heroSwipeTrail { 0%,12% { opacity: 0; transform: scaleY(.18); } 34%,78% { opacity: .78; transform: scaleY(1); } 100% { opacity: 0; transform: scaleY(1); } }
-@keyframes heroPoint { 0% { opacity: 0; transform: scale(.65); } 18%,72% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.08); } }
+@keyframes scorePunch { 0% { opacity: 1; transform: scale(1); } 48% { opacity: 1; transform: scale(1.28); } 99% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1); } }
+@keyframes featurePoint { 0% { opacity: 0; transform: scale(.65); } 18%,72% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.08); } }
 @keyframes cue { 0%,35%,100% { opacity: 0; transform: translate(-50%,10px); } 45%,75% { opacity: 1; transform: translate(-50%,0); } }
 @keyframes nudge { 50% { transform: translateY(-4px); } }
-@keyframes fingerSwipe { 0%,30%,100% { transform: translate(-50%, 34px); opacity: 0; } 40% { opacity: .9; } 72% { transform: translate(-50%, -78px); opacity: .9; } 82% { opacity: 0; } }
-@keyframes trail { 0%,38%,100% { opacity: 0; transform: scaleY(.2); transform-origin: bottom; } 48%,72% { opacity: 1; transform: scaleY(1); } 82% { opacity: 0; } }
-@keyframes plus { 0%,62%,100% { opacity: 0; transform: scale(.6); } 72%,88% { opacity: 1; transform: scale(1); } }
 
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; padding-top: 150px; text-align: center; }
