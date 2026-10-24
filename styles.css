@@ -87,7 +87,12 @@ h1, h2, h3 { margin: 0; letter-spacing: -.055em; }
 .shot-sequence { position: relative; }
 .shot-sequence .score-frame { position: absolute; inset: 0; opacity: 0; transform: scale(1.018); transition: opacity .48s ease, transform .72s cubic-bezier(.2,.8,.2,1); }
 .shot-sequence .score-frame.is-active { z-index: 1; opacity: 1; transform: scale(1); }
-.shot-sequence .swipe-cue { z-index: 3; }
+.hero-swipe-finger { position: absolute; z-index: 4; left: 10%; top: 40%; width: 26px; height: 36px; border: 1px solid rgba(255,255,255,.74); border-radius: 50% 50% 44% 44%; background: rgba(255,255,255,.9); box-shadow: 0 8px 22px rgba(0,0,0,.32); opacity: 0; transform: translate(-50%, 8px); }
+.hero-swipe-trail { position: absolute; z-index: 3; left: 10%; top: 15%; height: 92px; border-left: 2px dashed rgba(255,255,255,.76); opacity: 0; transform: scaleY(.2); transform-origin: bottom; }
+.hero-score-pop { position: absolute; z-index: 4; left: 50%; top: 9%; translate: -50% 0; padding: 4px 9px; border-radius: 999px; color: white; background: rgba(7,10,18,.74); font-size: 19px; font-weight: 750; opacity: 0; transform: scale(.7); }
+.shot-sequence.is-scoring .hero-swipe-finger { animation: heroFingerSwipe 1.05s cubic-bezier(.3,.7,.2,1) .28s both; }
+.shot-sequence.is-scoring .hero-swipe-trail { animation: heroSwipeTrail 1.05s ease .28s both; }
+.shot-sequence.is-scoring .hero-score-pop { animation: heroPoint 1.35s cubic-bezier(.2,.8,.2,1) 1.34s both; }
 .capture-label { position: absolute; bottom: 56px; left: 50%; transform: translateX(-50%); white-space: nowrap; color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: .02em; }
 .court-screen { position: relative; display: grid; grid-template-rows: 1fr 1fr; }
 .court-half { position: relative; min-height: 0; display: grid; grid-template-columns: 1fr .7fr 1fr; align-items: center; padding: 26px 15px; }
@@ -193,6 +198,9 @@ footer { min-height: 86px; padding: 0 max(24px, calc((100vw - 1180px) / 2)); dis
 @keyframes breathe { 50% { transform: scale(1.12); opacity: .72; } }
 @keyframes watchFloat { 50% { translate: 0 -10px; } }
 @keyframes screenReveal { from { opacity: .25; transform: scale(1.035); filter: blur(5px); } to { opacity: 1; transform: scale(1); filter: blur(0); } }
+@keyframes heroFingerSwipe { 0% { opacity: 0; transform: translate(-50%, 14px); } 18%,76% { opacity: .94; } 82% { transform: translate(-50%, -84px); opacity: .94; } 100% { transform: translate(-50%, -92px); opacity: 0; } }
+@keyframes heroSwipeTrail { 0%,12% { opacity: 0; transform: scaleY(.18); } 34%,78% { opacity: .78; transform: scaleY(1); } 100% { opacity: 0; transform: scaleY(1); } }
+@keyframes heroPoint { 0% { opacity: 0; transform: scale(.65); } 18%,72% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(1.08); } }
 @keyframes cue { 0%,35%,100% { opacity: 0; transform: translate(-50%,10px); } 45%,75% { opacity: 1; transform: translate(-50%,0); } }
 @keyframes nudge { 50% { transform: translateY(-4px); } }
 @keyframes fingerSwipe { 0%,30%,100% { transform: translate(-50%, 34px); opacity: 0; } 40% { opacity: .9; } 72% { transform: translate(-50%, -78px); opacity: .9; } 82% { opacity: 0; } }

@@ -50,21 +50,34 @@ updateStory();
 
 const heroSequence = document.querySelector('[data-score-sequence]');
 const heroFrames = [...heroSequence.querySelectorAll('.score-frame')];
-let heroFrameIndex = 0;
 let heroSequenceVisible = true;
+let heroScoreTimer;
+
+function showHeroFrame(index) {
+  heroFrames.forEach((frame, frameIndex) => {
+    const active = frameIndex === index;
+    frame.classList.toggle('is-active', active);
+    frame.setAttribute('aria-hidden', String(!active));
+  });
+}
+
+function playHeroScore() {
+  if (document.hidden || !heroSequenceVisible) return;
+  clearTimeout(heroScoreTimer);
+  showHeroFrame(0);
+  heroSequence.classList.remove('is-scoring');
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => heroSequence.classList.add('is-scoring'));
+  });
+  heroScoreTimer = setTimeout(() => showHeroFrame(1), 1380);
+}
 
 new IntersectionObserver(([entry]) => {
   heroSequenceVisible = entry.isIntersecting;
+  if (heroSequenceVisible && !prefersReducedMotion) playHeroScore();
 }, { threshold: 0.2 }).observe(heroSequence);
 
-if (!prefersReducedMotion) setInterval(() => {
-  if (document.hidden || !heroSequenceVisible) return;
-  heroFrames[heroFrameIndex].classList.remove('is-active');
-  heroFrames[heroFrameIndex].setAttribute('aria-hidden', 'true');
-  heroFrameIndex = (heroFrameIndex + 1) % heroFrames.length;
-  heroFrames[heroFrameIndex].classList.add('is-active');
-  heroFrames[heroFrameIndex].setAttribute('aria-hidden', 'false');
-}, 2600);
+if (!prefersReducedMotion) setInterval(playHeroScore, 4200);
 
 const rotationGallery = document.querySelector('.rotation-gallery');
 const rotationFigures = [...rotationGallery.querySelectorAll('figure')];
