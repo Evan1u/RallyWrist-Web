@@ -9,6 +9,8 @@ const revealObserver = new IntersectionObserver(
 
 document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
 
+const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 const storyScreen = document.querySelector('.story-screen');
 const watchWrap = document.querySelector('.story-watch-wrap');
 const storySteps = [...document.querySelectorAll('.story-step')];
@@ -23,7 +25,7 @@ function renderScreen(name) {
 
   const [src, alt] = screens[name];
   storyScreen.className = 'watch-screen story-screen';
-  storyScreen.innerHTML = `<img class="simulator-shot" src="${src}" alt="${alt}" />`;
+  storyScreen.innerHTML = `<img class="simulator-shot" src="${src}" alt="${alt}" decoding="async" />`;
   watchWrap.classList.remove('pulse');
   requestAnimationFrame(() => watchWrap.classList.add('pulse'));
 }
@@ -45,3 +47,37 @@ function updateStory() {
 addEventListener('scroll', updateStory, { passive: true });
 addEventListener('resize', updateStory);
 updateStory();
+
+const heroSequence = document.querySelector('[data-score-sequence]');
+const heroFrames = [...heroSequence.querySelectorAll('.score-frame')];
+let heroFrameIndex = 0;
+let heroSequenceVisible = true;
+
+new IntersectionObserver(([entry]) => {
+  heroSequenceVisible = entry.isIntersecting;
+}, { threshold: 0.2 }).observe(heroSequence);
+
+if (!prefersReducedMotion) setInterval(() => {
+  if (document.hidden || !heroSequenceVisible) return;
+  heroFrames[heroFrameIndex].classList.remove('is-active');
+  heroFrames[heroFrameIndex].setAttribute('aria-hidden', 'true');
+  heroFrameIndex = (heroFrameIndex + 1) % heroFrames.length;
+  heroFrames[heroFrameIndex].classList.add('is-active');
+  heroFrames[heroFrameIndex].setAttribute('aria-hidden', 'false');
+}, 2600);
+
+const rotationGallery = document.querySelector('.rotation-gallery');
+const rotationFigures = [...rotationGallery.querySelectorAll('figure')];
+let rotationIndex = 0;
+let rotationVisible = false;
+
+new IntersectionObserver(([entry]) => {
+  rotationVisible = entry.isIntersecting;
+}, { threshold: 0.25 }).observe(rotationGallery);
+
+if (!prefersReducedMotion) setInterval(() => {
+  if (document.hidden || !rotationVisible) return;
+  rotationFigures[rotationIndex].classList.remove('is-current');
+  rotationIndex = (rotationIndex + 1) % rotationFigures.length;
+  rotationFigures[rotationIndex].classList.add('is-current');
+}, 2000);
