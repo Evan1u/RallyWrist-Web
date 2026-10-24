@@ -74,10 +74,12 @@ function playHeroScore() {
 
 new IntersectionObserver(([entry]) => {
   heroSequenceVisible = entry.isIntersecting;
-  if (heroSequenceVisible && !prefersReducedMotion) playHeroScore();
 }, { threshold: 0.2 }).observe(heroSequence);
 
-if (!prefersReducedMotion) setInterval(playHeroScore, 4200);
+if (!prefersReducedMotion) {
+  playHeroScore();
+  setInterval(playHeroScore, 4200);
+}
 
 const rotationGallery = document.querySelector('.rotation-gallery');
 const rotationFigures = [...rotationGallery.querySelectorAll('figure')];
